@@ -40,6 +40,7 @@ public class MallApplication {
 		return sqlSessionFactoryBean.getObject();
 	}
 
+	//加入事务处理的bean
 	@Bean
 	public PlatformTransactionManager transactionManager() {
 		return new DataSourceTransactionManager(dataSource());
