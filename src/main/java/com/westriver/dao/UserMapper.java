@@ -1,6 +1,7 @@
 package com.westriver.dao;
 
 import com.westriver.pojo.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,4 +11,8 @@ import java.util.List;
 
 public interface UserMapper {
    public List<User> list();
+   public int checkUserName(String userName);
+   public User selectLogin(@Param("username") String userName, @Param("password") String password);
+   public int checkEmail(String email);
+   public int insert(User user);
 }
