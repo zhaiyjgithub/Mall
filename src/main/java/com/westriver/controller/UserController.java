@@ -21,7 +21,7 @@ public class UserController {
 
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public ServerResponse<User> login(String userName, String password) {
+    public ServerResponse  <User> login(String userName, String password) {
         ServerResponse<User> response = iUserServiceImpl.login(userName, password);
 
         return  response;
@@ -31,4 +31,11 @@ public class UserController {
     public ServerResponse<String> register(User user) {
         return iUserServiceImpl.register(user);
     }
+
+    @RequestMapping(value = "check_valid", method = RequestMethod.POST)
+    public ServerResponse<String> checkValid(String str, String type) {
+        return iUserServiceImpl.checkValid(str, type);
+    }
+
+
 }

@@ -22,7 +22,7 @@
     </sql>
 
     <select id="checkUserName" resultType="int" >
-        SELECT COUNT(1) username FROM mall_user WHERE username = #{userName}
+        SELECT COUNT(1) FROM mall_user WHERE username = #{userName}
     </select>
 
     <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
@@ -30,7 +30,7 @@
     </select>
 
     <select id="checkEmail" resultType="int">
-        SELECT COUNT(1) email FROM mall_user WHERE email = #{email}
+        SELECT COUNT(1) FROM mall_user WHERE email = #{email}
     </select>
 
     <insert id="insert" parameterType="com.westriver.pojo.User" >
@@ -38,4 +38,12 @@
           username, password, email, phone, question, answer, role, create_time, update_time
         ) VALUES (#{username}, #{password}, #{email}, #{phone}, #{question}, #{answer}, #{role}, now(), now())
     </insert>
+
+    <select id="selectQuestion" resultType="string" >
+        SELECT question FROM mall_user WHERE username = #{username}
+    </select>
+
+    <select id="checkAnswer" resultType="int" >
+        SELECT COUNT(1) FROM mall_user WHERE username = #{username} and question = #{question} and answer = #{answer}
+    </select>
 </mapper>

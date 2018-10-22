@@ -15,4 +15,6 @@ public interface UserMapper {
    public User selectLogin(@Param("username") String userName, @Param("password") String password);
    public int checkEmail(String email);
    public int insert(User user);
+   public String selectQuestion(String username);
+   public int checkAnswer(@Param("username") String username, @Param("question") String question, @Param("answer") String answer);
 }
