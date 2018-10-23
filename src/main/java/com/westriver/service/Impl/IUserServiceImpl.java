@@ -156,6 +156,37 @@ public class IUserServiceImpl implements IUserService{
         }
 
         return ServerResponse.createByErrorMessage("更新密码失败");
+    }
 
+    public ServerResponse<User> getUserInformationByUserId(Integer id) {
+        User user = (User)userMapper.getUserInformationByUserId(id);
+        if (user == null) {
+            return ServerResponse.createByErrorMessage("找不到该用户");
+        }
+
+        return ServerResponse.createBySuccess(user);
+    }
+
+    public ServerResponse<User> updateUserInformation(User user) {
+        int checkEmailCount = userMapper.checkEmailByUserId(user.getEmail(), user.getId());
+
+        if (checkEmailCount >0) {
+            return ServerResponse.createByErrorMessage("该邮箱已经被注册了");
+        }
+
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setUsername(user.getUsername());
+        updateUser.setEmail(user.getEmail());
+        updateUser.setPhone(user.getPhone());
+        updateUser.setQuestion(user.getQuestion());
+        updateUser.setAnswer(user.getAnswer());
+
+        int updateCount = userMapper.updateUserInformation(updateUser);
+        if (updateCount > 0) {
+            return ServerResponse.createBySuccess("更新成功", updateUser);
+        }
+
+        return ServerResponse.createByErrorMessage("更新个人信息失败");
     }
 }

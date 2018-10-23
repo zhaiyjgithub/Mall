@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerErrorException;
 import sun.tools.tree.RemainderExpression;
 
 import javax.jws.soap.SOAPBinding;
@@ -69,5 +70,34 @@ public class UserController {
         }
 
         return iUserServiceImpl.resetPassword(passwordOld, passwordNew, user);
+    }
+
+    @RequestMapping(value = "/get_info", method = RequestMethod.POST)
+    public ServerResponse<User> getUserInformationByUserId(HttpSession session) {
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+
+        if (user == null) {
+            return ServerResponse.createByErrorMessage("请先登录");
+        }
+        return iUserServiceImpl.getUserInformationByUserId(user.getId());
+    }
+
+    @RequestMapping(value = "/update_info", method = RequestMethod.POST)
+    public ServerResponse<User> updateUserInformation(HttpSession session, User user) {
+        User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
+
+        if (currentUser == null) {
+            return ServerResponse.createByErrorMessage("请先登录");
+        }
+
+        user.setId(currentUser.getId());
+
+        ServerResponse updateResponse = iUserServiceImpl.updateUserInformation(user);
+        if (updateResponse.isSuccess()) {
+            User updateUser = (User)updateResponse.getData();
+            session.setAttribute(Const.CURRENT_USER, updateUser);
+        }
+
+        return updateResponse;
     }
 }

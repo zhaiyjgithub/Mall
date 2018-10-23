@@ -20,4 +20,7 @@ public interface UserMapper {
    public int updatePasswordByUsername(@Param("username") String username, @Param("passwordNew") String PasswordNew);
    public int checkPassword(@Param("passwordOld") String passwordOld, @Param("userId") Integer userId);
    public int updatePasswordByUserId(@Param("passwordNew") String passwordNew, @Param("userId") Integer userId);
+   public User getUserInformationByUserId(Integer userId);
+   public int checkEmailByUserId(@Param("email") String email, @Param("userId") Integer userId);
+   public int updateUserInformation(User user);
 }
