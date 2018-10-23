@@ -2,6 +2,7 @@ package com.westriver.service.Impl;
 
 import com.westriver.common.Const;
 import com.westriver.common.ServerResponse;
+import com.westriver.common.TokenCache;
 import com.westriver.dao.UserMapper;
 import com.westriver.pojo.User;
 import com.westriver.service.IUserService;
@@ -10,7 +11,9 @@ import org.apache.catalina.ssi.ResponseIncludeWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.server.ServerErrorException;
 
+import java.util.UUID;
 import java.util.concurrent.locks.Condition;
 
 
@@ -40,10 +43,15 @@ public class IUserServiceImpl implements IUserService{
     }
 
     public ServerResponse<String> register(User user) {
-        ServerResponse checkResponse = checkValid(user.getUsername(), user.getEmail());
-        if (!checkResponse.isSuccess()) {
+        ServerResponse checkUserNameResponse = this.checkValid(user.getUsername(), Const.USERNAME);
+        if (!checkUserNameResponse.isSuccess()) {
 
-            return checkResponse;
+            return checkUserNameResponse;
+        }
+
+        ServerResponse checkEmailResponse = this.checkValid(user.getEmail(), Const.EMAIL);
+        if (!checkEmailResponse.isSuccess()) {
+            return checkEmailResponse;
         }
 
         user.setRole(Const.Role.ROLE_CUSTOMER); //设置角色
@@ -80,17 +88,17 @@ public class IUserServiceImpl implements IUserService{
     public ServerResponse<String> selectQuestion(String username) {
         ServerResponse response = this.checkValid(username, Const.USERNAME);
 
-        if (!response.isSuccess()) {
+        if (response.isSuccess()) {
             return ServerResponse.createByErrorMessage("用户不存在");
         }
 
         String question = userMapper.selectQuestion(username);
 
-        if (!StringUtils.isEmpty(question)) {
-            return ServerResponse.createByErrorMessage("没有设置问题");
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(question)) {
+            return ServerResponse.createBySuccess(question);
         }
 
-        return ServerResponse.createBySuccess(question);
+        return ServerResponse.createByErrorMessage("没有设置问题");
     }
 
     public ServerResponse<String> checkAnswer(String username, String question, String answer) {
@@ -100,7 +108,54 @@ public class IUserServiceImpl implements IUserService{
             return ServerResponse.createByErrorMessage("答案错误");
         }
 
-        String token = ""; //验证通过后，发送访问令牌token到客户端，允许访问特定资源
+        String token = UUID.randomUUID().toString(); //验证通过后，发送访问令牌token到客户端，允许访问特定资源
+        TokenCache.setKey(TokenCache.TOKEN_PREFIX + username, token);
         return ServerResponse.createBySuccess(token);
+    }
+
+    public ServerResponse<String> forgotResetPassword(String username, String passwordNew, String token) {
+        if (org.apache.commons.lang3.StringUtils.isBlank(token)) {
+            return ServerResponse.createByErrorMessage("参数错误");
+        }
+
+        ServerResponse checkUsernameResponse = this.checkValid(username, Const.USERNAME);
+
+        if (checkUsernameResponse.isSuccess()) {
+            return ServerResponse.createByErrorMessage("用户不存在");
+        }
+
+        String localToken = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+        if (org.apache.commons.lang3.StringUtils.isBlank(localToken)) {
+            return  ServerResponse.createByErrorMessage("token无效或者已经过期");
+        }
+
+        if (org.apache.commons.lang3.StringUtils.equals(localToken, token)) {
+            String md5Password = MD5Util.MD5EncodeUtf8(passwordNew);
+            int updateCount = userMapper.updatePasswordByUsername(username, md5Password);
+            if (updateCount > 0) {
+                return ServerResponse.createBySuccessMessage("更新成功");
+            }
+        }else {
+            ServerResponse.createByErrorMessage("请重新登录，token不一致");
+        }
+
+        return ServerResponse.createByErrorMessage("更新失败");
+    }
+
+    public ServerResponse<String> resetPassword(String passwordOld, String passwordNew, User user) {
+        int checkPasswordCount = userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld), user.getId());
+        if (checkPasswordCount == 0 ) {
+            return ServerResponse.createByErrorMessage("旧密码错误");
+        }
+
+        String passwordNewMD5 = MD5Util.MD5EncodeUtf8(passwordNew);
+        int updatePasswordCount = userMapper.updatePasswordByUserId(passwordNewMD5, user.getId());
+
+        if (updatePasswordCount > 0) {
+            return ServerResponse.createBySuccessMessage("更新密码成功");
+        }
+
+        return ServerResponse.createByErrorMessage("更新密码失败");
+
     }
 }

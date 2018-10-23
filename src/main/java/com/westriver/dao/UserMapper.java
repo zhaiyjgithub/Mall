@@ -17,4 +17,7 @@ public interface UserMapper {
    public int insert(User user);
    public String selectQuestion(String username);
    public int checkAnswer(@Param("username") String username, @Param("question") String question, @Param("answer") String answer);
+   public int updatePasswordByUsername(@Param("username") String username, @Param("passwordNew") String PasswordNew);
+   public int checkPassword(@Param("passwordOld") String passwordOld, @Param("userId") Integer userId);
+   public int updatePasswordByUserId(@Param("passwordNew") String passwordNew, @Param("userId") Integer userId);
 }

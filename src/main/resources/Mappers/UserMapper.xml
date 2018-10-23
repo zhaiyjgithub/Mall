@@ -46,4 +46,17 @@
     <select id="checkAnswer" resultType="int" >
         SELECT COUNT(1) FROM mall_user WHERE username = #{username} and question = #{question} and answer = #{answer}
     </select>
+
+    <update id="updatePasswordByUsername" parameterType="map" >
+        update mall_user SET password = #{passwordNew}, update_time = now()
+        WHERE username = #{username}
+    </update>
+
+    <select id="checkPassword" resultType="int" parameterType="map">
+        SELECT COUNT(1) FROM mall_user WHERE id = #{userId} and password = #{passwordOld}
+    </select>
+
+    <update id="updatePasswordByUserId" parameterType="map">
+        UPDATE mall_user SET password = #{passwordNew}, update_time = now() WHERE id = #{userId}
+    </update>
 </mapper>
