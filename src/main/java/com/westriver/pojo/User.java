@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Created by zack on 2018/10/15.
  */
-public class User implements Serializable{
+public class User{
     private int id;
     private String username;
     @JsonIgnore

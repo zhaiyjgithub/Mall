@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.westriver.dao.CategoryMapper">
+    <resultMap id="BaseResultMap" type="com.westriver.pojo.Category" >
+        <constructor >
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="parent_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="status" jdbcType="BIT" javaType="java.lang.Boolean" />
+            <arg column="sort_order" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, parent_id, name, status, sort_order, create_time, update_time
+    </sql>
+
+    <insert id="addCategory" parameterType="com.westriver.pojo.Category">
+        INSERT INTO mall_category (
+          parent_id,
+          name,
+          status,
+          create_time,
+          update_time
+        ) VALUES (
+          #{parentId},
+          #{name},
+          #{status},
+          now(),
+          now()
+        )
+    </insert>
+
+    <update id="updateCategoryName" parameterType="com.westriver.pojo.Category">
+        UPDATE mall_category
+        SET name = #{name}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="Base_Column_List" /> FROM mall_category WHERE id = #{id}
+    </select>
+
+    <select id="selectCategoryChildrenByParentId" resultMap="BaseResultMap" parameterType="int">
+        SELECT <include refid="Base_Column_List" /> FROM mall_category WHERE parent_id = #{parentId}
+    </select>
+</mapper>

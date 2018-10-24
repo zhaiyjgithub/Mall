@@ -28,25 +28,22 @@ public class UserController {
     @Autowired
     private IUserServiceImpl iUserServiceImpl;
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ServerResponse  <User> login(String username, String password, HttpSession session) {
         ServerResponse<User> response = iUserServiceImpl.login(username, MD5Util.MD5EncodeUtf8(password));
         if (response.isSuccess()) {
             session.setAttribute(Const.CURRENT_USER, response.getData());
         }
 
-        Date date = new Date();
-        System.out.println(date.toString());
-
         return  response;
     }
 
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ServerResponse<String> register(User user) {
         return iUserServiceImpl.register(user);
     }
 
-    @RequestMapping(value = "check_valid", method = RequestMethod.POST)
+    @RequestMapping(value = "/check_valid", method = RequestMethod.POST)
     public ServerResponse<String> checkValid(String str, String type) {
         return iUserServiceImpl.checkValid(str, type);
     }
