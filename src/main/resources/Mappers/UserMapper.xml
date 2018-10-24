@@ -68,7 +68,7 @@
         SELECT COUNT(1) FROM mall_user WHERE email = #{email} AND id != #{userId}
     </select>
 
-    <update id="updateUserInformation" parameterType="BaseResultMap">
+    <update id="updateUserInformation" parameterType="com.westriver.pojo.User">
         UPDATE mall_user
          <set>
              <if test="username != null">
@@ -103,7 +103,7 @@
                  create_time = #{createTime},
              </if>
 
-             <if test="udpateTime != null">
+             <if test="updateTime != null">
                  update_time = now(),
              </if>
          </set>

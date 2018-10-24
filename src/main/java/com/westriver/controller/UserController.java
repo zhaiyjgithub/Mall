@@ -5,6 +5,7 @@ import com.westriver.common.ServerResponse;
 import com.westriver.pojo.User;
 import com.westriver.service.Impl.IUserServiceImpl;
 import com.westriver.util.MD5Util;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,7 @@ import sun.tools.tree.RemainderExpression;
 import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpSession;
 import java.rmi.ServerError;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +34,9 @@ public class UserController {
         if (response.isSuccess()) {
             session.setAttribute(Const.CURRENT_USER, response.getData());
         }
+
+        Date date = new Date();
+        System.out.println(date.toString());
 
         return  response;
     }
@@ -83,7 +88,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/update_info", method = RequestMethod.POST)
-    public ServerResponse<User> updateUserInformation(HttpSession session, User user) {
+    public ServerResponse<String> updateUserInformation(HttpSession session, User user) {
         User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
 
         if (currentUser == null) {
@@ -94,10 +99,31 @@ public class UserController {
 
         ServerResponse updateResponse = iUserServiceImpl.updateUserInformation(user);
         if (updateResponse.isSuccess()) {
-            User updateUser = (User)updateResponse.getData();
-            session.setAttribute(Const.CURRENT_USER, updateUser);
+            if (StringUtils.isNotEmpty(user.getUsername())){
+                currentUser.setUsername(user.getUsername());
+            }
+
+            if (StringUtils.isNotEmpty(user.getEmail())) {
+                currentUser.setEmail(user.getEmail());
+            }
+
+            if (StringUtils.isNotEmpty(user.getPhone())) {
+                currentUser.setPhone(user.getPhone());
+            }
+
+            if (StringUtils.isNotEmpty(user.getQuestion())) {
+                currentUser.setQuestion(user.getQuestion());
+            }
+
+            if (StringUtils.isNotEmpty(user.getAnswer())) {
+                currentUser.setAnswer(user.getAnswer());
+            }
+
+            currentUser.setPassword(StringUtils.EMPTY);
+
+            session.setAttribute(Const.CURRENT_USER, currentUser);
         }
 
-        return updateResponse;
+        return ServerResponse.createBySuccessMessage("更新成功");
     }
 }
