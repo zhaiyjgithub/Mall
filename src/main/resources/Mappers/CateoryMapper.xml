@@ -45,4 +45,8 @@
     <select id="selectCategoryChildrenByParentId" resultMap="BaseResultMap" parameterType="int">
         SELECT <include refid="Base_Column_List" /> FROM mall_category WHERE parent_id = #{parentId}
     </select>
+
+    <select id="selectParallelChildrenByParentId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM mall_category WHERE parent_id = #{parentId}
+    </select>
 </mapper>

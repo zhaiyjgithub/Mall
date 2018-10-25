@@ -97,4 +97,14 @@ public class ICategoryServiceImpl implements ICategoryService {
 
         return categorySet;
     }
+
+    public ServerResponse getParallelChildrenByParentId(Integer parentId) {
+        if (parentId == null) {
+            return ServerResponse.createByErrorMessage("参数错误");
+        }
+
+        List<Category> list = categoryMapper.selectParallelChildrenByParentId(parentId);
+
+        return ServerResponse.createBySuccess(list);
+    }
 }
