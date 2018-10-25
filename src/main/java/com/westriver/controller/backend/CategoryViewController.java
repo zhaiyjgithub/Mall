@@ -1,4 +1,4 @@
-package com.westriver.controller;
+package com.westriver.controller.backend;
 
 import com.sun.org.apache.regexp.internal.RE;
 import com.westriver.common.Const;
@@ -48,5 +48,15 @@ public class CategoryViewController {
         }
 
         return iCategoryServiceImpl.selectCategoryAndChildrenById(categoryId);
+    }
+
+    @RequestMapping(value = "/get_children_category", method = RequestMethod.POST)
+    public ServerResponse getParallelChildrenByParentId(Integer parentId, HttpSession session) {
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorMessage("请先登录");
+        }
+
+        return iCategoryServiceImpl.getParallelChildrenByParentId(parentId);
     }
 }
