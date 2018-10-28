@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.westriver.dao.ProductMapper">
+    <select id="saveProduct" resultType="int" parameterType="com.westriver.pojo.Product">
+        insert into mall_product (
+          category_id,
+          name,
+          subTitle,
+          main_image,
+          sub_images,
+          detail,
+          price,
+          stock,
+          status,
+          create_time,
+          update_time
+        ) values (
+          #{categoryId},
+          #{name},
+          #{subTitle},
+          #{ijf}
+        )
+    </select>
+</mapper>

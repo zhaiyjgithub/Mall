@@ -33,7 +33,6 @@ public class ICategoryServiceImpl implements ICategoryService {
         }
 
         Category category = new Category();
-        category.setId(parentId);
         category.setName(categoryName);
         category.setStatus(true);
         category.setParentId(parentId);
