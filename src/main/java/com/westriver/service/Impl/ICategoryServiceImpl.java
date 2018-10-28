@@ -41,6 +41,7 @@ public class ICategoryServiceImpl implements ICategoryService {
         int addCategoryCount = categoryMapper.addCategory(category);
         if (addCategoryCount > 0) {
             return ServerResponse.createBySuccessMessage("添加成功");
+            
         }
 
         return ServerResponse.createByErrorMessage("添加失败");
