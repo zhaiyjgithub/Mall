@@ -1,24 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.westriver.dao.ProductMapper">
-    <select id="saveProduct" resultType="int" parameterType="com.westriver.pojo.Product">
-        insert into mall_product (
-          category_id,
-          name,
-          subTitle,
-          main_image,
-          sub_images,
-          detail,
-          price,
-          stock,
-          status,
-          create_time,
-          update_time
-        ) values (
-          #{categoryId},
-          #{name},
-          #{subTitle},
-          #{ijf}
-        )
-    </select>
+  <resultMap id="BaseResultMap" type="com.westriver.pojo.Product" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="category_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="subtitle" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="main_image" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sub_images" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="detail" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="stock" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, category_id, name, subtitle, main_image, sub_images, detail, price, stock, status,
+    create_time, update_time
+  </sql>
+
+  <insert id="saveProduct" parameterType="com.westriver.pojo.Product">
+      INSERT INTO mall_product (
+        category_id, name,subTitle,main_image,sub_images,detail,price,stock,status,create_time,update_time) VALUES (
+        #{categoryId},#{name},#{subTitle},#{mainImage},#{subImages}, #{detail},#{price},#{stock},#{status},now(),now())
+  </insert>
+
+  <update id="updateProduct" parameterType="com.westriver.pojo.Product">
+    UPDATE mall_product
+      <set>
+        <if test="categoryId != null">
+            category_id = #{categoryId}
+        </if>
+
+        <if test="name != null">
+          name = #{name}
+        </if>
+
+        <if test="subTitle != null">
+          subTitle = #{subTitle}
+        </if>
+
+        <if test="mainImage != null">
+          main_image = #{mainImage}
+        </if>
+
+        <if test="subImages != null">
+          sub_images = #{subImages}
+        </if>
+
+        <if test="detail != null">
+          detail = #{detail}
+        </if>
+
+        <if test="price != null">
+          price = #{price}
+        </if>
+
+        <if test="stock != null">
+          stock = #{stock}
+        </if>
+
+        <if test="status != null">
+          status  #{status}
+        </if>
+
+        <if test="createTime != null">
+          create_time = #{createTime}
+        </if>
+
+        <if test="updateTime != null">
+          update_time = now()
+        </if>
+      </set>
+
+      WHERE id = #{id}
+  </update>
+
+  <select id="checkProductById" resultType="int">
+    SELECT COUNT(1) <include refid="Base_Column_List" /> FROM mall_product WHERE id = #{id}
+  </select>
+
+  <update id="updateProductSaleStatus" >
+    update mall_product SET status = #{status} WHERE id = #{productId}
+  </update>
+
 </mapper>

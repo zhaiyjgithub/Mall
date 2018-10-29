@@ -6,7 +6,14 @@ import com.westriver.pojo.Product;
 import com.westriver.service.IProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.server.ServerErrorException;
 
+import javax.rmi.PortableRemoteObject;
+
+@Service
 public class IProductServiceImpl implements IProductService {
     @Autowired
     private ProductMapper productMapper;
@@ -14,7 +21,15 @@ public class IProductServiceImpl implements IProductService {
     public ServerResponse<String> saveOrUpdateProduct(Product product) {
         if (product != null) {
             if (product.getId() != null) { //更新产品
-                return ServerResponse.createByErrorMessage("更新商品成功");
+                if (productMapper.checkProductById(product.getId()) > 0) {
+                    if (productMapper.updateProduct(product) > 0) {
+                        return ServerResponse.createByErrorMessage("更新商品成功");
+                    }else {
+                        return ServerResponse.createByErrorMessage("更新产品失败");
+                    }
+                }else {
+                    return ServerResponse.createByErrorMessage("没有该商品");
+                }
             }else {//添加产品
                 int insertProductCount = productMapper.saveProduct(product);
                 if (insertProductCount > 0) {
@@ -25,6 +40,18 @@ public class IProductServiceImpl implements IProductService {
             }
         }else {
             return ServerResponse.createByErrorMessage("参数错误");
+        }
+    }
+
+    public ServerResponse<String> updateProductSaleStatus(Integer productId , Integer status) {
+        if (productMapper.checkProductById(productId) > 0) {
+            if (productMapper.updateProductSaleStatus(productId, status) > 0) {
+                return ServerResponse.createBySuccessMessage("更新成功");
+            }else {
+                return ServerResponse.createByErrorMessage("更新失败");
+            }
+        }else {
+            return ServerResponse.createByErrorMessage("没有该商品");
         }
     }
 }
