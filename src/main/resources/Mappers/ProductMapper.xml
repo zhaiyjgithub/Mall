@@ -88,4 +88,13 @@
     update mall_product SET status = #{status} WHERE id = #{productId}
   </update>
 
+  <select id="selectProductById" resultMap="BaseResultMap" >
+    SELECT <include refid="Base_Column_List" /> FROM mall_product WHERE id = #{productId}
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap" >
+    SELECT <include refid="Base_Column_List" /> FROM mall_product ORDER BY id ASC
+  </select>
+
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.westriver.controller.backend;
 
+import com.github.pagehelper.PageInfo;
 import com.sun.org.apache.regexp.internal.RE;
 import com.westriver.common.Const;
 import com.westriver.common.ServerResponse;
@@ -40,5 +41,10 @@ public class ProductViewController {
         }
 
         return iProductService.updateProductSaleStatus(productId, status);
+    }
+
+    @RequestMapping(value = "/get_product_list", method = RequestMethod.POST)
+    public ServerResponse<PageInfo> getProductList(Integer pageNum, Integer pageSize) {
+        return iProductService.getProductList(pageNum, pageSize);
     }
 }
