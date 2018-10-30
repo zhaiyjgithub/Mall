@@ -12,4 +12,5 @@ public interface ProductMapper {
     public int updateProductSaleStatus(@Param("productId") Integer productId , @Param("status") Integer status);
     public Product selectProductById(Integer productId);
     public List<Product> selectList();
+    public List<Product> searchProduct(@Param("productName") String productName, @Param("productId") Integer productId);
 }

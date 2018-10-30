@@ -47,4 +47,9 @@ public class ProductViewController {
     public ServerResponse<PageInfo> getProductList(Integer pageNum, Integer pageSize) {
         return iProductService.getProductList(pageNum, pageSize);
     }
+
+    @RequestMapping(value = "/search_product", method = RequestMethod.POST)
+    public ServerResponse<PageInfo> searchProduct(String productName, Integer productId, Integer pageNum, Integer pageSize) {
+        return iProductService.searchProduct(productName, productId, pageNum, pageSize);
+    }
 }

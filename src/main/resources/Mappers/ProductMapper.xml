@@ -96,5 +96,18 @@
     SELECT <include refid="Base_Column_List" /> FROM mall_product ORDER BY id ASC
   </select>
 
+  <select id="searchProduct" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM mall_product
+      <where>
+        <if test="productName != null">
+          and name LIKE #{productName}
+        </if>
+
+        <if test="productId != null">
+          and id = #{productId}
+        </if>
+      </where>
+
+  </select>
 
 </mapper>

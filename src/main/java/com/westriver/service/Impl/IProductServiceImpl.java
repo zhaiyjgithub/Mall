@@ -109,11 +109,31 @@ public class IProductServiceImpl implements IProductService {
             productDetailVoList.add(productDetailVo);
         }
 
-        PageInfo pageResult = new PageInfo(productList);
+        PageInfo pageResult = new PageInfo(productDetailVoList);
         pageResult.setList(productDetailVoList);
 
         return ServerResponse.createBySuccess(pageResult);
+    }
 
+    public ServerResponse<PageInfo> searchProduct(String productName, Integer productId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        if (StringUtils.isNotEmpty(productName)) {
+            productName = new StringBuilder().append("%").append(productName).append("%").toString();
+        }
+
+        List<Product> productList = productMapper.searchProduct(productName, productId);
+
+        List<ProductDetailVo> productDetailVoList = Lists.newArrayList();
+
+        for (Product product : productList) {
+            ProductDetailVo productDetailVo = assembleProductDetailVo(product);
+            productDetailVoList.add(productDetailVo);
+        }
+
+        PageInfo pageInfo = new PageInfo(productList);
+
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
 }
