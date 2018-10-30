@@ -110,4 +110,20 @@
 
   </select>
 
+  <select id="searchProductByCategoryId" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM mall_product
+      WHERE status = 1
+      <if test="productName != null">
+        and name LIKE #{productName}
+      </if>
+
+      <if test="categoryIdList != null">
+        and category_id IN
+        <foreach collection="categoryIdList" open="(" separator="," close=")" item="item" index="index">
+          #{item}
+        </foreach>
+      </if>
+
+  </select>
+
 </mapper>

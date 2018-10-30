@@ -26,6 +26,8 @@ public class IProductServiceImpl implements IProductService {
     private ProductMapper productMapper;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private ICategoryServiceImpl iCategoryServiceImpl;
 
     public ServerResponse<String> saveOrUpdateProduct(Product product) {
         if (product != null) {
@@ -132,6 +134,27 @@ public class IProductServiceImpl implements IProductService {
         }
 
         PageInfo pageInfo = new PageInfo(productList);
+
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    public ServerResponse<PageInfo> selectProductByCategoryId(String keyword, Integer categoryId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<Integer> categoryIdList = iCategoryServiceImpl.selectCategoryIdAndChildrenById(categoryId).getData();
+
+        String productName = new StringBuilder().append("%").append(keyword).append("%").toString();
+
+        List<Product> productList = productMapper.searchProductByCategoryId(productName, categoryIdList);
+
+        List<ProductDetailVo> productDetailVoList = Lists.newArrayList();
+        for(Product product : productList) {
+            ProductDetailVo productDetailVo = assembleProductDetailVo(product);
+            productDetailVoList.add(productDetailVo);
+        }
+
+        PageInfo pageInfo = new PageInfo(productList);
+        pageInfo.setList(productDetailVoList);
 
         return ServerResponse.createBySuccess(pageInfo);
     }

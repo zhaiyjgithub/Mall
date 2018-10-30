@@ -6,6 +6,7 @@ import com.westriver.common.Const;
 import com.westriver.common.ServerResponse;
 import com.westriver.pojo.Product;
 import com.westriver.pojo.User;
+import com.westriver.service.IProductService;
 import com.westriver.service.Impl.IProductServiceImpl;
 import org.apache.ibatis.annotations.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,10 @@ public class ProductViewController {
     @RequestMapping(value = "/search_product", method = RequestMethod.POST)
     public ServerResponse<PageInfo> searchProduct(String productName, Integer productId, Integer pageNum, Integer pageSize) {
         return iProductService.searchProduct(productName, productId, pageNum, pageSize);
+    }
+
+    @RequestMapping(value = "/search_product_keyword", method = RequestMethod.POST)
+    public ServerResponse<PageInfo> selectProductByCategoryId(String keyword, Integer categoryId, Integer pageNum, Integer pageSize) {
+        return iProductService.selectProductByCategoryId(keyword, categoryId, pageNum, pageSize);
     }
 }
