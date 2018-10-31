@@ -17,36 +17,37 @@
         id, user_id, product_id, quantity, checked, create_time, update_time
     </sql>
 
-    <!--<insert id="addProduct" parameterType="com.westriver.pojo.Cart">-->
-        <!--INSERT INTO mall_cart (user_id, product_id, quantity, checked, crate_time, update_time)-->
-        <!--VALUES (-->
-          <!--#{userId},-->
-          <!--#{productId},-->
-          <!--#{quantity},-->
-          <!--now(),-->
-          <!--now()-->
-        <!--)-->
-    <!--</insert>-->
+    <insert id="addProduct" parameterType="com.westriver.pojo.Cart">
+        INSERT INTO mall_cart (user_id, product_id, quantity, checked, create_time, update_time)
+        VALUES (
+          #{userId},
+          #{productId},
+          #{quantity},
+          #{checked},
+          now(),
+          now()
+        )
+    </insert>
 
-    <select id="selectProductById" parameterType="map" resultType="int">
-        SELECT count(1) FROM mall_cart WHERE user_id = #{userId} and product_id = #{productId}
+    <select id="selectProductById" parameterType="map" resultType="com.westriver.pojo.Cart">
+        SELECT <include refid="Base_Column_List" /> FROM mall_cart WHERE user_id = #{userId} and product_id = #{productId}
     </select>
 
-    <!--<update id="updateProduct" parameterMap="com.westriver.pojo.Cart">-->
-        <!--UPDATE mall_cart-->
-        <!--<set>-->
-            <!--<if test="quantity != null">-->
-                <!--quantity = #{quantity},-->
-            <!--</if>-->
+    <update id="updateProduct" parameterType="com.westriver.pojo.Cart">
+        UPDATE mall_cart
+        <set>
+            <if test="quantity != null">
+                quantity = #{quantity},
+            </if>
 
-            <!--<if test="checked != checked">-->
-                <!--checked = #{checked},-->
-            <!--</if>-->
+            <if test="checked != checked">
+                checked = #{checked},
+            </if>
 
-            <!--update_time = now()-->
-        <!--</set>-->
+            update_time = now()
+        </set>
 
-        <!--WHERE id = #{id}-->
+        WHERE id = #{id}
 
-    <!--</update>-->
+    </update>
 </mapper>

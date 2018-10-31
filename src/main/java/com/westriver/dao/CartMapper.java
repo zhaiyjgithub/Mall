@@ -8,6 +8,6 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface CartMapper {
     public int addProduct(Cart cart);
-    public int selectProductById(@Param("userId") Integer userId, @Param("productId") Integer productId);
+    public Cart selectProductById(@Param("userId") Integer userId, @Param("productId") Integer productId);
     public int updateProduct(Cart cart);
 }
