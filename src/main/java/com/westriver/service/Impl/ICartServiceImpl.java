@@ -24,15 +24,15 @@ public class ICartServiceImpl implements ICartService {
             return ServerResponse.createByErrorMessage("参数出错");
         }
 
-//        int count = cartMapper.selectProductById(userId, productId);
+        int count = cartMapper.selectProductById(userId, productId);
 //        if (cart == null) {
-            Cart cartItem = new Cart();
-            cartItem.setUserId(userId);
-            cartItem.setProductId(productId);
-            cartItem.setQuantity(quantity);
-            cartItem.setChecked(Const.Cart.CHECKED);
-
-            cartMapper.addProduct(cartItem);
+//            Cart cartItem = new Cart();
+//            cartItem.setUserId(userId);
+//            cartItem.setProductId(productId);
+//            cartItem.setQuantity(quantity);
+//            cartItem.setChecked(Const.Cart.CHECKED);
+//
+//            cartMapper.addProduct(cartItem);
 //        }else {
 //            cart.setQuantity(cart.getQuantity() + quantity);
 //            cart.setChecked(Const.Cart.CHECKED);
