@@ -12,4 +12,12 @@ public class Const {
         int ROLE_CUSTOMER = 0;
         int ROLW_ADMIN = 1;
     }
+
+    public interface Cart {
+        boolean CHECKED = true;//即购物车选中状态
+        boolean UN_CHECKED = false;//购物车中未选中状态
+
+        String LIMIT_NUM_FAIL = "LIMIT_NUM_FAIL";
+        String LIMIT_NUM_SUCCESS = "LIMIT_NUM_SUCCESS";
+    }
 }
