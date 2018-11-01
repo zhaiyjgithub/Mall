@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.westriver.dao.ShippingMapper">
+    <insert id="addAddress" parameterType="com.westriver.pojo.Shipping">
+        INSERT INTO mall_shipping (
+          user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city,
+          receiver_district, receiver_address, receiver_zip, creat_time, update_time
+        ) VALUES (
+          #{userId},
+          #{receiverName},
+          #{receiverPhone},
+          #{receiverMobile},
+          #{receiverProvince},
+          #{receiverCity},
+          #{receiverDistrict},
+          #{receiverAddress},
+          #{receiverZip},
+          now(),
+          now()
+        )
+    </insert>
+
+    <update id="updateAddress" parameterType="com.westriver.pojo.Shipping">
+        UPDATE mall_shipping FROM
+        <set>
+            <if test="receiverName != null">
+                receiver_name = #{receiverName},
+            </if>
+
+            <if test="receiverPhone != null">
+                receiver_phone = #{receiverPhone},
+            </if>
+
+            <if test="receiverMobile != null">
+                receiver_mobile = #{receiverMobile},
+            </if>
+
+            <if test="receiveProvince != null">
+                receiver_province = #{receiverProvince},
+            </if>
+
+            <if test="receiverCity != null">
+                receiver_city = #{receiverCity},
+            </if>
+
+            <if test="receiverDistrict != null">
+                receiver_district = #{receiverDistrict},
+            </if>
+
+            <if test="receiverAddress != null">
+                receiver_address = #{receiverAddress},
+            </if>
+
+            <if test="receiverZip != null">
+                receiver_zip = #{receiverZip},
+            </if>
+
+            updateTime = now()
+        </set>
+
+        WHERE id = #{id}
+    </update>
+</mapper>
