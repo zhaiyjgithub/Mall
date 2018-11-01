@@ -36,6 +36,7 @@ public class CartViewController {
 
     @RequestMapping(value = "/delete_product", method = RequestMethod.POST)
     public ServerResponse<CartVo> deleteProduct(Integer userId, Integer productId) {
+
         return iCartServiceImpl.deleteProduct(userId, productId);
     }
 
