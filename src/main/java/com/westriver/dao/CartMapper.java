@@ -13,4 +13,5 @@ public interface CartMapper {
     public Cart selectProductById(@Param("userId") Integer userId, @Param("productId") Integer productId);
     public int updateProduct(Cart cart);
     public List<Cart> selectByUserId(Integer userId);
+    public int deleteProduct(@Param("userId") Integer userId, @Param("productId") Integer productId);
 }

@@ -54,16 +54,27 @@ public class ICartServiceImpl implements ICartService {
         return ServerResponse.createBySuccessMessage("添加成功");
     }
 
-//    public ServerResponse<String> updateProductQuantity(Integer userId, Integer productId, Integer quantity) {
-//        if (userId == null || productId == null || quantity == null) {
-//            return ServerResponse.createByErrorMessage("参数出错");
-//        }
-//
-//        Cart cartItem = cartMapper.selectProductById(userId, productId);
-//        if (cartItem == null) {
-//            return ServerResponse.createByErrorMessage("找不到该商品")
-//        }
-//    }
+    public ServerResponse<CartVo> updateProductQuantity(Integer userId, Integer productId, Integer quantity) {
+        if (userId == null || productId == null || quantity == null) {
+            return ServerResponse.createByErrorMessage("参数出错");
+        }
+
+        Cart cartItem = cartMapper.selectProductById(userId, productId);
+        if (cartItem == null) {
+            return ServerResponse.createByErrorMessage("找不到该商品");
+        }
+
+        cartItem.setQuantity(quantity);
+        cartMapper.updateProduct(cartItem);
+
+        return this.getCartProductVoList(userId);
+    }
+
+    public ServerResponse<CartVo> deleteProduct(Integer userId, Integer productId) {
+        int deleteCount = cartMapper.deleteProduct(userId, productId);
+
+        return this.getCartProductVoList(userId);
+    }
 
     public ServerResponse<CartVo> getCartProductVoList(Integer userId) {
         if (userId == null) {

@@ -54,4 +54,9 @@
     <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" /> FROM mall_cart WHERE user_id = #{userId}
     </select>
+
+    <delete id="deleteProduct">
+        DELETE FROM mall_cart WHERE
+          user_id = #{userId} AND product_id = #{productId}
+    </delete>
 </mapper>
