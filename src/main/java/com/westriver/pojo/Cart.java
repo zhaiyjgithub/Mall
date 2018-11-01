@@ -10,11 +10,11 @@ public class Cart {
     private Integer userId;
     private Integer productId;
     private Integer quantity;
-    private boolean checked;
+    private Boolean checked;
     private Date createTime;
     private Date updateTime;
 
-    public Cart(Integer id, Integer userId, Integer productId, Integer quantity, boolean checked, Date createTime, Date updateTime) {
+    public Cart(Integer id, Integer userId, Integer productId, Integer quantity, Boolean checked, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.productId = productId;
@@ -60,11 +60,11 @@ public class Cart {
         this.quantity = quantity;
     }
 
-    public boolean isChecked() {
+    public Boolean isChecked() {
         return checked;
     }
 
-    public void setChecked(boolean checked) {
+    public void setChecked(Boolean checked) {
         this.checked = checked;
     }
 

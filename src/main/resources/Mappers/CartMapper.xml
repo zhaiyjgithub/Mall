@@ -50,4 +50,8 @@
         WHERE id = #{id}
 
     </update>
+
+    <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM mall_cart WHERE user_id = #{userId}
+    </select>
 </mapper>
