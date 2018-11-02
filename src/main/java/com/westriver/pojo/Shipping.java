@@ -1,5 +1,7 @@
 package com.westriver.pojo;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Date;
 
 /**
@@ -18,6 +20,25 @@ public class Shipping {
     private String receiverZip;
     private Date createTime;
     private Date updateTime;
+
+    public Shipping(Integer id, Integer userId, String receiverName, String receiverMobile, String receiverPhone, String receiverProvince, String receiverCity, String receiverDistrict, String receiverAddress, String receiverZip, Date createTime, Date updateTime) {
+        this.id = id;
+        this.userId = userId;
+        this.receiverName = receiverName;
+        this.receiverMobile = receiverMobile;
+        this.receiverPhone = receiverPhone;
+        this.receiverProvince = receiverProvince;
+        this.receiverCity = receiverCity;
+        this.receiverDistrict = receiverDistrict;
+        this.receiverAddress = receiverAddress;
+        this.receiverZip = receiverZip;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
+
+    public Shipping() {
+        super();
+    }
 
     public Integer getId() {
         return id;
