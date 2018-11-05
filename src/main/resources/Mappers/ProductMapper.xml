@@ -19,13 +19,13 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, category_id, name, subtitle, main_image, sub_images, detail, price, stock, status,
+    id, category_id, name, subTitle, main_image, sub_images, detail, price, stock, status,
     create_time, update_time
   </sql>
 
   <insert id="saveProduct" parameterType="com.westriver.pojo.Product">
       INSERT INTO mall_product (
-        category_id, name,subTitle,main_image,sub_images,detail,price,stock,status,create_time,update_time) VALUES (
+        category_id, name,subtitle,main_image,sub_images,detail,price,stock,status,create_time,update_time) VALUES (
         #{categoryId},#{name},#{subTitle},#{mainImage},#{subImages}, #{detail},#{price},#{stock},#{status},now(),now())
   </insert>
 
@@ -33,47 +33,47 @@
     UPDATE mall_product
       <set>
         <if test="categoryId != null">
-            category_id = #{categoryId}
+            category_id = #{categoryId},
         </if>
 
         <if test="name != null">
-          name = #{name}
+          name = #{name},
         </if>
 
         <if test="subTitle != null">
-          subTitle = #{subTitle}
+          subtitle = #{subTitle},
         </if>
 
         <if test="mainImage != null">
-          main_image = #{mainImage}
+          main_image = #{mainImage},
         </if>
 
         <if test="subImages != null">
-          sub_images = #{subImages}
+          sub_images = #{subImages},
         </if>
 
         <if test="detail != null">
-          detail = #{detail}
+          detail = #{detail},
         </if>
 
         <if test="price != null">
-          price = #{price}
+          price = #{price},
         </if>
 
         <if test="stock != null">
-          stock = #{stock}
+          stock = #{stock},
         </if>
 
         <if test="status != null">
-          status  #{status}
+          status = #{status},
         </if>
 
         <if test="createTime != null">
-          create_time = #{createTime}
+          create_time = #{createTime},
         </if>
 
         <if test="updateTime != null">
-          update_time = now()
+          update_time = now(),
         </if>
       </set>
 

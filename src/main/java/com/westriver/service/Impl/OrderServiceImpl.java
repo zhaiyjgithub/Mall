@@ -2,6 +2,7 @@ package com.westriver.service.Impl;
 
 import com.alipay.api.domain.Car;
 import com.google.common.collect.Lists;
+import com.sun.org.apache.regexp.internal.RE;
 import com.westriver.common.Const;
 import com.westriver.common.ServerResponse;
 import com.westriver.dao.*;
@@ -65,10 +66,56 @@ public class OrderServiceImpl implements IOrderService {
         this.cleanCartList(cartList);
 
 
-        OrderVo orderVo = this.createOrderVo(order, orderItemList, shippingId);
+        OrderVo orderVo = this.createOrderVo(order, orderItemList);
+
+
         return ServerResponse.createBySuccess(orderVo);
     }
 
+    public ServerResponse<String> cancelOrder(Integer userId, Long orderNo) {
+        Order order = orderMapper.selectOrderById(userId, orderNo);
+
+        if (order != null) {
+            Order updateOrder = new Order();
+            updateOrder.setId(order.getId());
+            updateOrder.setStatus(Const.OrderStatusEnum.CANCELED.getCode());
+
+            if (orderMapper.updateOrder(updateOrder) > 0) {
+                return ServerResponse.createBySuccessMessage("更新成功");
+            }
+
+        }
+
+        return ServerResponse.createByErrorMessage("更新失败");
+    }
+
+    public ServerResponse<OrderVo> getOrderDetail(Integer userId, Long orderNo) {
+        Order order = orderMapper.selectOrderById(userId, orderNo);
+        if (order != null) {
+            List<OrderItem> orderItemList = orderItemMapper.selectOrderItemList(userId, orderNo);
+
+            OrderVo orderVo = createOrderVo(order, orderItemList);
+
+            return ServerResponse.createBySuccess(orderVo);
+        }
+
+        return ServerResponse.createByErrorMessage("查找失败");
+    }
+
+    public ServerResponse<List<OrderVo>> getOrderList(Integer userId) {
+        List<Order> orderList = orderMapper.selectOrderByUserId(userId);
+
+        List<OrderVo> orderVoList = Lists.newArrayList();
+        for (Order order : orderList) {
+            List<OrderItem> orderItemList = orderItemMapper.selectOrderItemList(userId, order.getOrderNo());
+
+            OrderVo orderVo = createOrderVo(order, orderItemList);
+
+            orderVoList.add(orderVo);
+        }
+
+        return ServerResponse.createBySuccess(orderVoList);
+    }
 
     private ServerResponse<List<OrderItem>> getCartOrderItem(Integer userId, List<Cart> cartList) {
         List<OrderItem> orderItemList = Lists.newArrayList();
@@ -114,7 +161,7 @@ public class OrderServiceImpl implements IOrderService {
         order.setOrderNo(orderNo);
         order.setStatus(Const.OrderStatusEnum.NO_PAY.getCode());
         order.setPostage(0);
-        order.setPayType(Const.PaymentTypeEnum.ONLINE_PAY.getCode());
+        order.setpaymentType(Const.PaymentTypeEnum.ONLINE_PAY.getCode());
         order.setPayment(payment);
 
         order.setUserId(userId);
@@ -145,12 +192,12 @@ public class OrderServiceImpl implements IOrderService {
         }
     }
 
-    private OrderVo createOrderVo(Order order, List<OrderItem> orderItemList, Integer shippingId) {
+    private OrderVo createOrderVo(Order order, List<OrderItem> orderItemList) {
         OrderVo orderVo = new OrderVo();
         orderVo.setOrderNo(order.getOrderNo());
         orderVo.setPayment(order.getPayment());
-        orderVo.setPaymengType(order.getPayType());
-        orderVo.setPaymentDesc(Const.PaymentTypeEnum.codeOf(order.getPayType()).getValue());
+        orderVo.setPaymengType(order.getpaymentType());
+        orderVo.setPaymentDesc(Const.PaymentTypeEnum.codeOf(order.getpaymentType()).getValue());
 
         orderVo.setPostage(order.getPostage());
         orderVo.setStatus(order.getStatus());

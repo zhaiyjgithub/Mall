@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface OrderItemMapper {
     public int batchInsert(@Param("orderItemList") List<OrderItem> orderItemList);
+    public List<OrderItem> selectOrderItemList(@Param("userId") Integer userId, @Param("orderNo") Long orderNo);
 }

@@ -14,7 +14,7 @@ public class Order {
     private Integer userId;
     private Integer shippingId;
     private BigDecimal payment;
-    private Integer payType;
+    private Integer paymentType;
     private Integer postage;
     private Integer status;
     private Date paymentTime;
@@ -24,7 +24,7 @@ public class Order {
     private Date createTime;
     private Date updateTime;
 
-    public Order(Integer id, Long orderNo, Integer userId, Integer shippingId, BigDecimal payment, Integer payType, Integer postage, Integer status, Date paymentTime, Date sendTime, Date endTime,
+    public Order(Integer id, Long orderNo, Integer userId, Integer shippingId, BigDecimal payment, Integer paymentType, Integer postage, Integer status, Date paymentTime, Date sendTime, Date endTime,
                     Date closeTime, Date createTime, Date updateTime
                  ) {
         this.id = id;
@@ -32,7 +32,7 @@ public class Order {
         this.userId = userId;
         this.shippingId = shippingId;
         this.payment = payment;
-        this.payType = payType;
+        this.paymentType = paymentType;
         this.postage = postage;
         this.status = status;
         this.paymentTime = paymentTime;
@@ -87,12 +87,12 @@ public class Order {
         this.payment = payment;
     }
 
-    public Integer getPayType() {
-        return payType;
+    public Integer getpaymentType() {
+        return paymentType;
     }
 
-    public void setPayType(Integer payType) {
-        this.payType = payType;
+    public void setpaymentType(Integer paymentType) {
+        this.paymentType = paymentType;
     }
 
     public Integer getPostage() {
