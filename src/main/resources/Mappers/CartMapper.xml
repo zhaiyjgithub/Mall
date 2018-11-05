@@ -59,4 +59,8 @@
         DELETE FROM mall_cart WHERE
           user_id = #{userId} AND product_id = #{productId}
     </delete>
+
+    <delete id="deleteProductById" >
+        DELETE FROM mall_cart WHERE id = #{id}
+    </delete>
 </mapper>

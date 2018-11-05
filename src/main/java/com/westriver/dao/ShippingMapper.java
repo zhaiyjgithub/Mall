@@ -9,4 +9,5 @@ public interface ShippingMapper {
     public int addAddress(Shipping shipping);
     public int selectAddressById(Integer shippingId);
     public int updateAddress(Shipping shipping);
+    public Shipping selectById(Integer shippingId);
 }

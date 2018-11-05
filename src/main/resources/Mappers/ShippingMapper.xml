@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.westriver.dao.ShippingMapper">
+    <resultMap id="BaseResultMap" type="com.westriver.pojo.Shipping" >
+        <constructor >
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="receiver_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="receiver_phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="receiver_mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="receiver_province" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="receiver_city" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="receiver_district" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="receiver_address" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="receiver_zip" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city,
+        receiver_district, receiver_address, receiver_zip, create_time, update_time
+    </sql>
+
     <insert id="addAddress" parameterType="com.westriver.pojo.Shipping" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO mall_shipping (
           user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city,
@@ -60,4 +81,8 @@
 
         WHERE id = #{id}
     </update>
+
+    <select id="selectById" resultType="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM mall_shipping WHERE id = #{id}
+    </select>
 </mapper>
