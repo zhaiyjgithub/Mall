@@ -11,10 +11,13 @@ import com.westriver.service.IOrderService;
 import com.westriver.util.BigDecimalUtil;
 import com.westriver.util.DateTimeUtil;
 import com.westriver.vo.OrderItemVo;
+import com.westriver.vo.OrderProductVo;
 import com.westriver.vo.OrderVo;
 import com.westriver.vo.ShippingVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.origin.OriginProvider;
 import org.springframework.stereotype.Service;
+import sun.font.BidiUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -56,7 +59,7 @@ public class OrderServiceImpl implements IOrderService {
             orderItem.setOrderNo(order.getOrderNo());
         }
 
-        //批量插入订单详情
+        //批量插入订单详情,以后使用订单号就可以在这个订单详情表中获取这个订单下所有的商品
         orderItemMapper.batchInsert(orderItemList);
 
         //订单生成成功后，减小库存
@@ -66,6 +69,7 @@ public class OrderServiceImpl implements IOrderService {
         this.cleanCartList(cartList);
 
 
+        //返回总价，商品详情到前台显示
         OrderVo orderVo = this.createOrderVo(order, orderItemList);
 
 
@@ -75,7 +79,7 @@ public class OrderServiceImpl implements IOrderService {
     public ServerResponse<String> cancelOrder(Integer userId, Long orderNo) {
         Order order = orderMapper.selectOrderById(userId, orderNo);
 
-        if (order != null) {
+        if (order != null) { //还要判断该订单时候已经付款了。已付款状态下不能取消订单
             Order updateOrder = new Order();
             updateOrder.setId(order.getId());
             updateOrder.setStatus(Const.OrderStatusEnum.CANCELED.getCode());
@@ -86,7 +90,7 @@ public class OrderServiceImpl implements IOrderService {
 
         }
 
-        return ServerResponse.createByErrorMessage("更新失败");
+        return ServerResponse.createByErrorMessage("订单不存在");
     }
 
     public ServerResponse<OrderVo> getOrderDetail(Integer userId, Long orderNo) {
@@ -117,7 +121,7 @@ public class OrderServiceImpl implements IOrderService {
         return ServerResponse.createBySuccess(orderVoList);
     }
 
-    private ServerResponse<List<OrderItem>> getCartOrderItem(Integer userId, List<Cart> cartList) {
+     ServerResponse<List<OrderItem>> getCartOrderItem(Integer userId, List<Cart> cartList) {
         List<OrderItem> orderItemList = Lists.newArrayList();
 
         for (Cart cartItem : cartList) {
@@ -232,6 +236,36 @@ public class OrderServiceImpl implements IOrderService {
         return orderVo;
 
     }
+
+    //预览购物车中，已经勾选的状态下的商品信息，并计算总价等,
+    public ServerResponse<OrderProductVo> getOrderCartProduct(Integer userId) {
+        OrderProductVo orderProductVo = new OrderProductVo();
+
+        List<Cart> cartList = cartMapper.selectCheckedCartByUserId(userId);
+        //从购物车后读取得到商品，重新获取最新的价格，库存等信息，组装生成一个最新的orderItem
+        ServerResponse serverResponse =  this.getCartOrderItem(userId, cartList);
+
+        if (!serverResponse.isSuccess()) {
+            return serverResponse;
+        }
+
+        List<OrderItem> orderItemList = (List<OrderItem>)serverResponse.getData();
+        List<OrderItemVo> orderProductVoList = Lists.newArrayList();
+
+        BigDecimal payment = new BigDecimal("0");
+
+        for (OrderItem orderItem : orderItemList) {
+            payment = BigDecimalUtil.add(payment.doubleValue(), orderItem.getTotalPrice().doubleValue());
+            orderProductVoList.add(assembleOrderItemVo(orderItem));
+        }
+
+        orderProductVo.setImageHost("image host");
+        orderProductVo.setOrderItemVoList(orderProductVoList);
+        orderProductVo.setProductTotalPrice(payment);
+
+        return ServerResponse.createBySuccess(orderProductVo);
+    }
+
 
     private OrderItemVo assembleOrderItemVo(OrderItem orderItem){
         OrderItemVo orderItemVo = new OrderItemVo();

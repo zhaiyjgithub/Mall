@@ -1,5 +1,6 @@
 package com.westriver.dao;
 
+import com.alipay.api.domain.Car;
 import com.westriver.pojo.Cart;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,4 +16,5 @@ public interface CartMapper {
     public List<Cart> selectByUserId(Integer userId);
     public int deleteProduct(@Param("userId") Integer userId, @Param("productId") Integer productId);
     public int deleteProductById(Integer id);
+    public List<Cart> selectCheckedCartByUserId(Integer userId);
 }
