@@ -6,7 +6,7 @@
 	<groupId>com.westriver</groupId>
 	<artifactId>mall</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>mall</name>
 	<description>Demo project for Spring Boot</description>
@@ -146,14 +146,14 @@
                     <target>1.7</target>
                     <encoding>UTF-8</encoding>
                     <compilerArguments>
-                        <extdirs>${project.basedir}/src/main/src/webapp/WEB-INF/lib</extdirs>
+                        <extdirs>${project.basedir}/src/main/webapp/WEB-INF/lib</extdirs>
                     </compilerArguments>
                 </configuration>
             </plugin>
 		</plugins>
 
-
 	</build>
+
 
 
 </project>

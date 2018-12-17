@@ -1,11 +1,7 @@
 package com.westriver.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sun.javaws.jnl.RContentDesc;
-
-import java.awt.image.RescaleOp;
 import java.io.Serializable;
 
 /**

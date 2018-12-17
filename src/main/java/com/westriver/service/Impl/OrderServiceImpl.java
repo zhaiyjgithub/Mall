@@ -1,6 +1,5 @@
 package com.westriver.service.Impl;
 
-import com.alipay.api.domain.Car;
 import com.google.common.collect.Lists;
 import com.sun.org.apache.regexp.internal.RE;
 import com.westriver.common.Const;
@@ -23,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.locks.Condition;
+
 
 /**
  * Created by zack on 2018/11/4.

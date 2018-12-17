@@ -1,6 +1,5 @@
 package com.westriver.dao;
 
-import com.alipay.api.domain.Car;
 import com.westriver.pojo.Cart;
 import org.apache.ibatis.annotations.Param;
 

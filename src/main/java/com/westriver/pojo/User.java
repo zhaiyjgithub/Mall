@@ -1,9 +1,6 @@
 package com.westriver.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-
-import java.io.Serializable;
 import java.util.Date;
 
 /**

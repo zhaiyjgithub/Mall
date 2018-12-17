@@ -1,7 +1,5 @@
 package com.westriver.pojo;
 
-import sun.jvm.hotspot.opto.LoopNode;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
