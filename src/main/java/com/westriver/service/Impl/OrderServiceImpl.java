@@ -1,7 +1,6 @@
 package com.westriver.service.Impl;
 
 import com.google.common.collect.Lists;
-import com.sun.org.apache.regexp.internal.RE;
 import com.westriver.common.Const;
 import com.westriver.common.ServerResponse;
 import com.westriver.dao.*;
@@ -14,14 +13,10 @@ import com.westriver.vo.OrderProductVo;
 import com.westriver.vo.OrderVo;
 import com.westriver.vo.ShippingVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.origin.OriginProvider;
 import org.springframework.stereotype.Service;
-import sun.font.BidiUtils;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.locks.Condition;
 
 
 /**

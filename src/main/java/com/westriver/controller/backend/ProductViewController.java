@@ -1,14 +1,11 @@
 package com.westriver.controller.backend;
 
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.regexp.internal.RE;
 import com.westriver.common.Const;
 import com.westriver.common.ServerResponse;
 import com.westriver.pojo.Product;
 import com.westriver.pojo.User;
-import com.westriver.service.IProductService;
 import com.westriver.service.Impl.IProductServiceImpl;
-import org.apache.ibatis.annotations.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

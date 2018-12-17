@@ -2,20 +2,13 @@ package com.westriver.service.Impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.sun.org.apache.regexp.internal.RE;
-import com.westriver.common.Const;
 import com.westriver.common.ServerResponse;
 import com.westriver.dao.CategoryMapper;
 import com.westriver.pojo.Category;
-import com.westriver.pojo.User;
 import com.westriver.service.ICategoryService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Set;
 
